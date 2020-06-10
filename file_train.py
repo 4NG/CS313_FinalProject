@@ -13,16 +13,17 @@ f.preprocessing(file)
 
 # classification
 file_data = pd.read_csv(output_file)
-file_data_test = file_data.drop(['RainTomorrow'])
+file_data.info()
+file_data_test = file_data.drop(['RainTomorrow'], axis=1)
 
-log_reg = load('LogisticRegression.joblib')
+log_reg = load('LogisticRegression1.joblib')
 print(log_reg.predict(file_data_test))
 
-rf = load('RandomForest.joblib')
+rf = load('RandomForest1.joblib')
 print(rf.predict(file_data_test))
 
-svm = load('SupportVectorMachine.joblib')
+svm = load('SupportVectorMachine1.joblib')
 print(svm.predict(file_data_test))
 
-dt = load('DecisionTree.joblib')
+dt = load('DecisionTree1.joblib')
 print(dt.predict(file_data_test))
