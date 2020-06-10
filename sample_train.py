@@ -4,7 +4,7 @@ Classify a sample
 from Preprocessing import *
 from joblib import load
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import LabelEncoder
 
 # input all features
 date = input("YY/MM/DD: ")
@@ -30,7 +30,6 @@ temp9am = float(input("Temp9am: "))
 temp3pm = float(input("Temp3pm: "))
 raintoday = input("RainToday: ")
 risk_mm = input("RISK_MM: ")
-raintomorrow = input("RainTomorrow: ")
 
 # create a pandas dataframe
 data = {'Date': [date],
@@ -55,14 +54,13 @@ data = {'Date': [date],
         'Temp9am': [temp9am],
         'Temp3pm': [temp3pm],
         'RainToday': [raintoday],
-        'RISK_MM': [risk_mm],
-        'RainTomorrow': [raintomorrow]}
+        'RISK_MM': [risk_mm]}
 
-sample = pd.DataFrame(data, columns=['Date', 'Location', 'MinTemp', 'MaxTemp', 'RainFall',
+sample = pd.DataFrame(data, columns=['Date', 'Location', 'MinTemp', 'MaxTemp', 'Rainfall',
                                      'Evaporation', 'Sunshine', 'WindGustDir', 'WindGustSpeed',
                                      'WindDir9am', 'WindDir3pm', 'WindSpeed9am', 'WindSpeed3pm',
                                      'Humidity9am', 'Humidity3pm', 'Pressure9am', 'Pressure3pm', 'Cloud9am',
-                                     'Cloud3pm', 'Temp9am', 'Temp3pm', 'RainToday', 'RISK_MM', 'RainTomorrow'])
+                                     'Cloud3pm', 'Temp9am', 'Temp3pm', 'RainToday', 'RISK_MM'])
 # sample pre-processing
 sample.drop(['RISK_MM'], axis=1, inplace=True)
 
@@ -74,29 +72,25 @@ sample.drop('Date', axis=1, inplace=True)
 
 nominal = []
 list_columns = sample.columns.tolist()
-list_columns.remove('RainTomorrow')
 for i in list_columns:
     if sample[i].dtypes == 'object':
         nominal.append(i)
 
-sample = pd.get_dummies(sample, columns=nominal)
-
-scale = MinMaxScaler()
-sample = pd.DataFrame(scale.fit_transform(sample), columns=sample.columns)
-
-sample.drop(['RainTomorrow'], axis=1, inplace=True)
+le = LabelEncoder()
+for i in nominal:
+    sample[i] = le.fit_transform(sample[i])
 
 # predict
-log_reg = load('LogisticRegression.joblib')
+log_reg = load('LogisticRegression1.joblib')
 print(log_reg.predict(sample))
 
-rf = load('RandomForest.joblib')
+rf = load('RandomForest1.joblib')
 print(rf.predict(sample))
 
-svm = load('SupportVectorMachine.joblib')
+svm = load('SupportVectorMachine1.joblib')
 print(svm.predict(sample))
 
-dt = load('DecisionTree.joblib')
+dt = load('DecisionTree1.joblib')
 print(dt.predict(sample))
 
 
