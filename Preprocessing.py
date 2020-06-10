@@ -55,7 +55,6 @@ class Preprocessing:
         numeric = []
         nominal = []
         list_columns = data.columns.tolist()
-        list_columns.remove('RainTomorrow')
         for i in list_columns:
             if data[i].dtypes == 'float64' or data[i].dtypes == 'int64':
                 numeric.append(i)
@@ -95,14 +94,15 @@ class Preprocessing:
         # one_hot_encoding
         # convert to int
         # all categorical columns
-        data = pd.get_dummies(data, columns=nominal)
+        # data = pd.get_dummies(data, columns=nominal)
 
         # label_encoder
         # covert label to int
         # Yes -> 1, No -> 0
         le = LabelEncoder()
-        data['RainTomorrow'] = le.fit_transform(data['RainTomorrow'])
-
+        # data['RainTomorrow'] = le.fit_transform(data['RainTomorrow'])
+        for i in nominal:
+            data[i] = le.fit_transform(data[i])
         # normalization
 
         # min-max
