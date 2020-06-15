@@ -1,3 +1,7 @@
+# Problem
+Rain in Australia
+Link: https://www.kaggle.com/jsphyg/weather-dataset-rattle-package
+
 # DataMining_FinalProject
 Logistic: Accuracy score on test set: 0.8501
 
@@ -14,3 +18,4 @@ SVM: Accuracy score on training set: 0.8695
 Decision Tree: Accuracy score on test set: 0.7915
 
 Decision Tree: Accuracy score on training set: 1.0000
+
